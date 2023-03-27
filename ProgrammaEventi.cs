@@ -33,20 +33,27 @@ internal class ProgrammaEventi
         return eventiPerData;
     }
 
-    static string StampaLista(List<Evento> listaEventi)
+    public void StampaListaEventi(List<Evento> listaEventiInData)
     {
-        string result = "[";
-        for (int i = 0; i < listaEventi.Count; i++)
+        foreach (Evento evento in listaEventiInData)
         {
-            result += listaEventi[i].ToString();
-            if (i != listaEventi.Count - 1)
+            Console.WriteLine(evento.ToString());
+        }
+    }
+
+    public List<Evento> GetEventiInData(DateTime data)
+    {
+        List<Evento> eventiInData = new List<Evento>();
+        foreach (Evento evento in Eventi)
+        {
+            if (evento.Data == data)
             {
-                result += ", ";
+                eventiInData.Add(evento);
             }
         }
-        result += "]";
-        return result;
+        return eventiInData;
     }
+
 
     public int CountEventi()
     {
@@ -63,11 +70,10 @@ internal class ProgrammaEventi
         string result = "Nome programma evento: ";
         foreach (Evento evento in Eventi)
         {
-            result += evento.Data.ToString() + " - " + evento.Title;
+            result += evento.Data.ToString("dd/MM/yyyy") + " - " + evento.Title;
         }
         return result;
     }
-
 
 }
 
