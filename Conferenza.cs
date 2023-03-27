@@ -18,7 +18,7 @@ class Conferenza : Evento
 
     public string GetDataOraFormattata()
     {
-        return Data.ToString("dd/MM/yyyy HH:mm");
+        return Data.ToString("dd/MM/yyyy");
     }
 
     public string GetPrezzoFormattato()
