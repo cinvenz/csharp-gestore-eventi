@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -12,17 +14,13 @@ public class Evento
 
     private string _title;
     private DateTime _data;
-    private int _maxCapacity;
-    private int _numberReservedSeats;
+    public int _maxCapacity;
+    public int _numberReservedSeats;
 
     public Evento(string title, DateTime data, int maxCapacity)
     {
         _title = title;
         _data = data;
-        if (MaxCapacity <= 0)
-        {
-            throw new ArgumentException("La capienza massima deve essere un numero positivo");
-        }
         _maxCapacity = maxCapacity;
         _numberReservedSeats = 0;
     }
@@ -55,7 +53,17 @@ public class Evento
 
     public int MaxCapacity
     {
-        get { return _maxCapacity; }
+            get => _maxCapacity; private set
+        {
+            if (value > 0)
+            {
+                _maxCapacity = value;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), "La capienza massima deve essere un numero positivo");
+            }
+        }
     }
 
     public int NumberReservedSeats
@@ -100,6 +108,14 @@ public class Evento
             throw new ArgumentException("Vuoi disdire più posti di quanti prenotati");
         }
         _numberReservedSeats -= postiDaDisdire;
+    }
+
+    // L’override del metodo ToString() in modo che venga restituita una stringa contenente: data formattata – titolo
+    // Per formattare la data correttamente usate nomeVariabile.ToString("dd/MM/yyyy"); applicata alla vostra variabile DateTime.
+
+    public override string ToString()
+    {
+        return _data.ToString("dd/MM/yyyy") + " - " + Title;
     }
 
 
