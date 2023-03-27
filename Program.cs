@@ -17,9 +17,9 @@ Console.WriteLine($"Evento creato con successo: { newEvent }" );
 // Create the Evento instance
 
 Console.Write("Vuoi prenotare dei posti per questo evento? (si/no): ");
-string input = Console.ReadLine();
+string inputPrenota = Console.ReadLine();
 
-if (input.ToLower() == "si")
+if (inputPrenota.ToLower() == "si")
 {
     Console.Write("Quanti posti vuoi prenotare? ");
     int postiDaPrenotare = int.Parse(Console.ReadLine());
@@ -30,8 +30,36 @@ if (input.ToLower() == "si")
 }
 else
 {
-    Console.Write("Grazie e alla prossima");
+    Console.Write("ok va bene");
 }
+
+
+Console.Write("Vuoi disdire dei posti per questo evento? (si/no): ");
+string inputDisdici = Console.ReadLine();
+
+while (inputDisdici.ToLower() == "si")
+{
+    Console.Write("Quanti posti vuoi disdire? ");
+    int postiDaDisdire = int.Parse(Console.ReadLine());
+
+    try
+    {
+        newEvent.DisdiciPosti(postiDaDisdire);
+        var postiDisponibili = newEvent.MaxCapacity - newEvent.NumberReservedSeats;
+        Console.WriteLine($"Disdetta avvenuta con successo. Posti disdetti: {postiDaDisdire} - Posti disponibili {postiDisponibili}");
+    }
+    catch (ArgumentException exception)
+    {
+        Console.WriteLine(exception.Message);
+    }
+
+    Console.Write("Vuoi disdire altri posti? (si/no): ");
+    inputDisdici = Console.ReadLine();
+}
+
+Console.Write("Ok va bene");
+
+
 
 
 
