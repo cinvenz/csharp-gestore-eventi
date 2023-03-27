@@ -66,6 +66,7 @@
 
 using System;
 using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 Console.WriteLine("Programma di Eventi!");
 
@@ -161,20 +162,88 @@ else
 
 
 
-Console.Write("vuoi eliminaretutti gli eventi? si/no (si/no): ");
-string inputElimina = Console.ReadLine();
+//Console.Write("vuoi eliminaretutti gli eventi? si/no (si/no): ");
+//string inputElimina = Console.ReadLine();
 
-if (inputElimina.ToLower() == "si")
-{
-    Console.WriteLine("Tutti gli eventi sono stati eliminati!");
-    programmaEventi.SvuotaLista();
-}
+//if (inputElimina.ToLower() == "si")
+//{
+//    Console.WriteLine("Tutti gli eventi sono stati eliminati!");
+//    programmaEventi.SvuotaLista();
+//}
+//else
+//{
+//    Console.Write("Arrivederci.");
+//}
+
+
+//--------------------BONUS-------------------------
+
+
+Console.Write("aggiungiamo anche una conferenza: ");
+
+Console.Write("Nome della Conferenza: ");
+string NameConference = Console.ReadLine();
+
+Console.Write("data della conferenza: ");
+DateTime dataConference = DateTime.Parse(Console.ReadLine());
+
+Console.Write("Numero di posti della Conferenza: ");
+int maxCapacityConference = int.Parse(Console.ReadLine());
+
+Console.Write("Il relatore della conferenza: ");
+string NameRelatore = Console.ReadLine();
+
+Console.Write("Il prezzo del biglietto della Conferenza: ");
+double prezzoConference = double.Parse(Console.ReadLine());
+
+Conferenza newConference = new Conferenza(NameConference, dataConference, maxCapacityConference, NameRelatore, prezzoConference);
+
+programmaEventi.AggiungiEvento(newConference);
+
+Console.WriteLine($"Conferenza creata con successo: {newConference}");
+
+Console.Write("Vuoi prenotare dei posti per questa conferenza? (si/no): ");
+string inputPrenotaConferenza = Console.ReadLine();
+
+if (inputPrenotaConferenza.ToLower() == "si")
+    {
+        Console.Write("Quanti posti vuoi prenotare? ");
+
+        int postiDaPrenotare = int.Parse(Console.ReadLine());
+
+        newConference.PrenotaPosti(postiDaPrenotare);
+
+        var postiDisponibili = newConference.MaxCapacity - newConference.NumberReservedSeats;
+
+        Console.WriteLine($"Prenotazione effettuata con successo. Posti prenotati: {newConference.NumberReservedSeats} - Posti disponibili {postiDisponibili}");
+
+    }
 else
+    {
+        Console.WriteLine("Ok va bene");
+    }
+
+Console.Write("Vuoi disdire dei posti per questa conferenza? (si/no): ");
+string inputDisdiciConferenza = Console.ReadLine();
+
+while (inputDisdiciConferenza.ToLower() == "si")
 {
-    Console.Write("Arrivederci.");
+    Console.Write("Quanti posti vuoi disdire? ");
+    int postiDaDisdire = int.Parse(Console.ReadLine());
+
+    try
+    {
+        newConference.DisdiciPosti(postiDaDisdire);
+        var postiDisponibili = newConference.MaxCapacity - newConference.NumberReservedSeats;
+        Console.WriteLine($"Disdetta avvenuta con successo. Posti disdetti: {postiDaDisdire} - Posti disponibili {postiDisponibili}");
+    }
+    catch (ArgumentException exception)
+    {
+        Console.WriteLine(exception.Message);
+    }
+
+    Console.Write("Vuoi disdire altri posti? (si/no): ");
+    inputDisdiciConferenza = Console.ReadLine();
+
 }
-
-
-
-
-
+Console.WriteLine("Ok va bene");
